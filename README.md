@@ -2,6 +2,14 @@
 
 Pixpipe er en liten, “ekte” bildeplattform der brukeren laster opp et bilde, og systemet prosesserer det asynkront (thumbnail/resize/watermark) via en kø og workers. Du får en jobId, kan følge status, og hente ferdige resultater.
 
+
+
+<pre> ## Architecture ```mermaid flowchart LR U[Bruker] --> W[Web-app] W -->|POST /api/jobs| A[API] A -->|enqueue job| Q[(Redis queue)] Q --> WK[Worker] WK -->|process image| P[Sharp] P --> S[(S3 / MinIO)] A -->|GET /api/jobs/:jobId| U ``` </pre>
+
+
+
+
+
 ## Modern MVP stack (learn-by-building)
 - **TypeScript monorepo** (pnpm workspaces)
 - **API:** Fastify + multipart upload
@@ -52,18 +60,9 @@ pnpm -C apps/web dev
 ## Next steps
 1) Wire API + Worker to Postgres via Prisma
 2) Track job state: QUEUED → PROCESSING → COMPLETED/FAILED
-
-flowchart LR
-  U[Bruker] --> W[Web-app]
-  W -->|POST /api/jobs| A[API]
-  A -->|enqueue job| Q[(Redis queue)]
-  Q --> WK[Worker]
-  WK -->|thumbnail/resize/watermark| P[Image processing]
-  P --> S[(S3 storage / MinIO)]
-  A -->|GET /api/jobs/:jobId| ST[Status endpoint]
-  ST --> U
-
-
-
 3) Add `GET /api/jobs/:jobId/result` (download/proxy thumbnail)
 4) Add watermark + more transforms
+
+
+
+
