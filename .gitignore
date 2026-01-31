@@ -1,0 +1,17 @@
+node_modules
+.pnpm-store
+.DS_Store
+.env
+.env.*
+
+# builds
+/dist
+/build
+/.next
+
+# prisma
+packages/db/prisma/dev.db
+packages/db/prisma/dev.db-journal
+
+# uploads / artifacts
+storage
