@@ -4,7 +4,17 @@ Pixpipe er en liten, “ekte” bildeplattform der brukeren laster opp et bilde,
 
 
 
-<pre> ## Architecture ```mermaid flowchart LR U[Bruker] --> W[Web-app] W -->|POST /api/jobs| A[API] A -->|enqueue job| Q[(Redis queue)] Q --> WK[Worker] WK -->|process image| P[Sharp] P --> S[(S3 / MinIO)] A -->|GET /api/jobs/:jobId| U ``` </pre>
+## Architecture
+```mermaid
+flowchart LR
+  U[Bruker] --> W[Web-app]
+  W -->|POST /api/jobs| A[API]
+  A -->|enqueue job| Q[(Redis queue)]
+  Q --> WK[Worker]
+  WK -->|process image| P[Sharp]
+  P --> S[(S3 / MinIO)]
+  A -->|GET /api/jobs/:jobId| U
+```
 
 
 
@@ -62,7 +72,6 @@ pnpm -C apps/web dev
 2) Track job state: QUEUED → PROCESSING → COMPLETED/FAILED
 3) Add `GET /api/jobs/:jobId/result` (download/proxy thumbnail)
 4) Add watermark + more transforms
-
 
 
 
